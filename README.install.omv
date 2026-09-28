@@ -1,0 +1,33 @@
+Frappe 16.35 is the web framework under /usr/lib/frappe. Sites and
+uploaded files live in /var/lib/frappe/sites. The web service listens
+on 127.0.0.1:8000. Realtime uses 127.0.0.1:9000. MariaDB is local.
+Redis is three private instances on Unix sockets:
+redis@frappe-cache, redis@frappe-queue and redis@frappe-socketio.
+
+ERPNext is a separate package. Other Frappe applications install the
+same way, on top of this package.
+
+1. Start MariaDB and the private Redis instances:
+
+   systemctl enable --now mariadb redis@frappe-cache redis@frappe-queue redis@frappe-socketio
+
+2. Create the first site. MariaDB root on this system authenticates
+   through the local socket, so run the command as root.
+
+   frappe new-site localhost \
+     --admin-password 'choose-one' \
+     --mariadb-root-username root \
+     --db-root-password ''
+
+   Add --install-app erpnext when that package is installed.
+
+3. Start the application:
+
+   systemctl enable --now frappe frappe-worker frappe-scheduler frappe-socketio
+
+4. Open http://localhost:8000 and log in as Administrator.
+
+To put nginx in front, install frappe-nginx and enable the site:
+
+   ln -s ../sites-available/frappe.conf /etc/nginx/sites-enabled/frappe.conf
+   systemctl reload nginx
