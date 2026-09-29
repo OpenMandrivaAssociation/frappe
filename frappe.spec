@@ -6,7 +6,7 @@ Name:		frappe
 %global debug_package %{nil}
 # Upstream pins are for the bench installer. The system copies of those
 # modules are what we run against.
-%global __requires_exclude_from /frappe-.*dist-info/METADATA$
+%global __requires_exclude_from /frappe-.*\\.dist-info$
 %global __requires_exclude ^python3(\\.14)?dist\\((psycopg2-binary|ipython|barcodenumber)\\)
 # 16.35.0 is the Frappe release ERPNext 16.36 is developed against.
 Version:	16.35.0
