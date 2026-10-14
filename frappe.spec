@@ -146,6 +146,8 @@ realtime service on port 9000. The site is installed disabled.
 %prep
 %autosetup -c -T -D
 tar -xf %{SOURCE0}
+# 16.35.0 declares requires-python <3.15. Cooker is 3.15.
+sed -i 's/requires-python = ">=3.14,<3.15"/requires-python = ">=3.14"/' frappe/pyproject.toml
 
 %build
 mkdir -p %{_builddir}/wheels
